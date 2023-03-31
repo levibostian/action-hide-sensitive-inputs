@@ -18,6 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v3
+
+    - name: Install dependencies because I dont want to setup ncc yet 
+      run: npm ci 
+      
     - uses: ./ 
       with:
         exclude_inputs: "exclude_me, also_exclude_me"
