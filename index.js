@@ -11,7 +11,7 @@ core.info(`List of inputs to exclude: ${listOfInputsToExclude}`)
 
 const inputKeysToHide = allInputKeys.filter(inputKey => !listOfInputsToExclude.includes(inputKey))
 
-core.info(`After removing the inputs to exclude, these are all of the inputs that will be hidden: ${allInputsForWorkflow}`)
+core.info(`After removing the inputs to exclude, these are all of the inputs that will be hidden: ${inputKeysToHide}`)
 
 // Time to hide the values 
 
