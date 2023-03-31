@@ -1,10 +1,11 @@
-const core = require('@actions/core');
+import core from '@actions/core';
 import chalk from 'chalk';
+import fs from 'fs';
 
 // Get a list of inputs that we should hide the values of. 
 
 const listOfInputsToExclude = core.getInput('exclude_inputs').split(',').map(item => item.trim());
-let inputsObject = require(process.env.GITHUB_EVENT_PATH).inputs;
+let inputsObject = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).inputs;
 let allInputKeys = Object.keys(inputsObject);
 
 core.info(chalk.blue(`All inputs for this workflow: ${allInputKeys}`))

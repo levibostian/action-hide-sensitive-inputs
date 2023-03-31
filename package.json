@@ -6,6 +6,8 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "private": true,
+  "type": "module",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "chalk": "^5.2.0"
