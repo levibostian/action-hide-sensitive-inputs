@@ -18,3 +18,5 @@ core.info(`After removing the inputs to exclude, these are all of the inputs tha
 for (const inputKey of inputKeysToHide) {    
   core.setSecret(inputsObject[inputKey])
 }
+
+core.info('Done! You can now feel free to use ${{ input.X }} as you normally would and have value hidden in GitHub Action run logs.')
