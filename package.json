@@ -2,11 +2,12 @@
   "name": "action-hide-sensitive-inputs",
   "version": "1.0.0",
   "description": "Hide the values of your GitHub Action workflow inputs",
-  "main": "index.js",  
+  "main": "index.js",
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.10.0"
+    "@actions/core": "^1.10.0",
+    "chalk": "^5.2.0"
   }
 }

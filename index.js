@@ -1,4 +1,5 @@
 const core = require('@actions/core');
+const chalk = require('chalk');
 
 // Get a list of inputs that we should hide the values of. 
 
@@ -6,17 +7,24 @@ const listOfInputsToExclude = core.getInput('exclude_inputs').split(',').map(ite
 let inputsObject = require(process.env.GITHUB_EVENT_PATH).inputs;
 let allInputKeys = Object.keys(inputsObject);
 
-core.info(`All inputs for this workflow: ${allInputKeys}`)
-core.info(`List of inputs to exclude: ${listOfInputsToExclude}`)
+core.info(chalk.blue(`All inputs for this workflow: ${allInputKeys}`))
+core.info(chalk.blue(`List of inputs to exclude: ${listOfInputsToExclude}`))
 
 const inputKeysToHide = allInputKeys.filter(inputKey => !listOfInputsToExclude.includes(inputKey))
 
-core.info(`After removing the inputs to exclude, these are all of the inputs that will be hidden: ${inputKeysToHide}`)
+core.info(chalk.yellow(`After removing the inputs to exclude, these are all of the inputs that will be hidden: ${inputKeysToHide}`))
 
 // Time to hide the values 
 
+core.info('')
+
 for (const inputKey of inputKeysToHide) {    
+  core.info(`Hiding value for input: ${inputKey}`)
   core.setSecret(inputsObject[inputKey])
 }
 
-core.info('Done! You can now feel free to use ${{ input.X }} as you normally would and have value hidden in GitHub Action run logs.')
+core.info('')
+
+// Done! 
+
+core.info(chalk.green('Done! You can now feel free to use ${{ input.X }} as you normally would and have value hidden in GitHub Action run logs.'))
