@@ -1,12 +1,20 @@
 const core = require('@actions/core');
 
+// Get a list of inputs that we should hide the values of. 
+
 const listOfInputsToExclude = core.getInput('exclude_inputs').split(',').map(item => item.trim());
-let allInputsForWorkflow = Object.keys(require(process.env.GITHUB_EVENT_PATH).inputs);
+let inputsObject = require(process.env.GITHUB_EVENT_PATH).inputs;
+let allInputKeys = Object.keys(inputsObject);
 
+core.info(`All inputs for this workflow: ${allInputKeys}`)
 core.info(`List of inputs to exclude: ${listOfInputsToExclude}`)
-core.info(`All inputs for this workflow: ${allInputsForWorkflow}`)
 
-allInputsForWorkflow = allInputsForWorkflow.filter(inputKey => !listOfInputsToExclude.includes(inputKey))
+const inputKeysToHide = allInputKeys.filter(inputKey => !listOfInputsToExclude.includes(inputKey))
 
 core.info(`After removing the inputs to exclude, these are all of the inputs that will be hidden: ${allInputsForWorkflow}`)
 
+// Time to hide the values 
+
+for (const inputKey of inputKeysToHide) {    
+  core.setSecret(inputsObject[inputKey])
+}

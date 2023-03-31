@@ -25,3 +25,9 @@ jobs:
     - uses: ./ 
       with:
         exclude_inputs: "exclude_me, also_exclude_me"
+    
+    - name: Print all inputs, via inputs, to see if they are hidden 
+      run: |
+        echo "Value should be hidden: ${{ inputs.hide_me }}"
+        echo "Value should be shown: ${{ inputs.exclude_me }}"
+        echo "Value should be shown: ${{ inputs.also_exclude_me }}"
