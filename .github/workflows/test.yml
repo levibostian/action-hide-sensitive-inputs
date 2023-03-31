@@ -7,11 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - name: Trigger workflow that has inputs to hide. Wait for result.
-      uses: aurelien-baudet/workflow-dispatch@v2
-      id: trigger-workflow
+      uses: benc-uk/workflow-dispatch@v1      
       with:
         workflow: run-action-via-dispatch.yml
         ref: ${{ github.ref_name }} # run the workflow from the current branch to test the present state of the code 
-
-    - name: Print workflow URL to review it
-      run: echo "Make sure to review the workflow to see if inputs were hidden...${{ steps.trigger-workflow.outputs.workflow-url }}"
