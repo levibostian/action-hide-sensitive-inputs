@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const chalk = require('chalk');
+import chalk from 'chalk';
 
 // Get a list of inputs that we should hide the values of. 
 
