@@ -9,7 +9,16 @@ jobs:
       actions: write # to be able to call another action in the repo 
     steps: 
     - name: Trigger workflow that has inputs to hide. Wait for result.
-      uses: benc-uk/workflow-dispatch@v1      
+      uses: aurelien-baudet/workflow-dispatch@v2
+      id: test-action
       with:
         workflow: run-action-via-dispatch.yml
+        wait-for-completion-interval: 5s
+        display-workflow-run-url: false # workflow doesnt take long so waste to try and display
         ref: ${{ github.ref_name }} # run the workflow from the current branch to test the present state of the code 
+        wait-for-completion: true 
+        token: ${{ secrets.GITHUB_TOKEN }}      
+
+    - name: Fail if test was not successful 
+      if: ${{ steps.test-action.outputs.workflow-conclusion != 'success' }}
+      uses: cutenode/action-always-fail@v1.0.0
