@@ -22,12 +22,23 @@ jobs:
     - name: Install dependencies because I dont want to setup ncc yet 
       run: npm ci 
       
-    - uses: ./ 
+    - name: ⚠️ Run action ⚠️
+      uses: ./ 
       with:
         exclude_inputs: "exclude_me, also_exclude_me"
     
-    - name: Print all inputs to see if they are hidden 
+    - name: ⚠️ Print all inputs to see if they are hidden ⚠️
       run: |
         echo "Value should be hidden: ${{ inputs.hide_me }}"
         echo "Value should be shown: ${{ inputs.exclude_me }}"
         echo "Value should be shown: ${{ inputs.also_exclude_me }}"
+
+    - name: ⚠️ Print all inputs, via env, to see if they are hidden in output and command logs ⚠️
+      run: |
+        echo "Value should be hidden: $HIDE_ME"
+        echo "Value should be shown: $EXCLUDE_ME"
+        echo "Value should be shown: $ALSO_EXCLUDE_ME"
+      env: 
+        HIDE_ME: ${{ inputs.hide_me }}
+        EXCLUDE_ME: ${{ inputs.exclude_me }}
+        ALSO_EXCLUDE_ME: ${{ inputs.also_exclude_me }}
