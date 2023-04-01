@@ -19,8 +19,8 @@ jobs:
     steps: 
     - uses: actions/checkout@v3
 
-    - name: Install dependencies because I dont want to setup ncc yet 
-      run: npm ci 
+    - name: Compile action to run it 
+      run: npm ci && npm run compile 
       
     - name: ⚠️ Run action ⚠️
       uses: ./ 

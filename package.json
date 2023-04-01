@@ -2,6 +2,9 @@
   "name": "action-hide-sensitive-inputs",
   "version": "1.0.0",
   "description": "Hide the values of your GitHub Action workflow inputs",
+  "scripts": {
+    "compile": "npx ncc build index.js -o dist"
+  },
   "main": "index.js",
   "keywords": [],
   "author": "",
@@ -11,5 +14,8 @@
   "dependencies": {
     "@actions/core": "^1.10.0",
     "ansi-styles": "^6.2.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1"
   }
 }

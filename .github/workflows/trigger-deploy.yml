@@ -1,0 +1,32 @@
+name: Trigger deploy after merges to main 
+
+on: 
+  push:
+    branches: [main]
+
+jobs:
+  merge-commits-trigger-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write # be able to trigger another workflow 
+    steps:
+    - uses: actions/checkout@v3
+    - uses: emiliopedrollo/auto-merge@v1.2.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        target_branch: latest
+        allow_fast_forward: true 
+    
+    # We manually run here because github will not execute github actions as a result of commits being pushed to latest branch. 
+    - name: Trigger deploy 
+      uses: aurelien-baudet/workflow-dispatch@v2
+      id: deploy-action
+      with:
+        workflow: deploy-action.yml
+        wait-for-completion: true 
+        ref: latest # run the workflow on latest branch so deploy happens on it. 
+        token: ${{ secrets.GITHUB_TOKEN }}        
+
+    - name: Fail if deploy was not successful 
+      if: ${{ steps.deploy-action.outputs.workflow-conclusion != 'success' }}
+      uses: cutenode/action-always-fail@v1.0.0

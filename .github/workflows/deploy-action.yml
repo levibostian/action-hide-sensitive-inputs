@@ -1,0 +1,25 @@
+name: Deploy Action 
+
+on: 
+  workflow_dispatch: # this workflow gets manually executed when commits merged into main 
+
+jobs:
+  deploy-via-semantic-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to push tags and commits 
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: npm ci
+
+    - name: Run semantic-release
+      uses: cycjimmy/semantic-release-action@v3
+      with: 
+        branch: latest # have this match what this workflow triggers on
+        extra_plugins: |
+          conventional-changelog-conventionalcommits
+          @semantic-release/git
+          @semantic-release/exec
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
