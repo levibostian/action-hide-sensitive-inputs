@@ -9,9 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write # be able to trigger another workflow 
+      contents: write # to merge commits into latest branch 
     steps:
     - uses: actions/checkout@v3
-    - uses: emiliopedrollo/auto-merge@v1.2.0
+
+    - name: Merge commits into latest branch where deploy occurs 
+      uses: emiliopedrollo/auto-merge@v1.2.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         target_branch: latest
