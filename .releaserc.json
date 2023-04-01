@@ -14,6 +14,10 @@
             "assets": ["dist/index.js"],
             "message": "chore: release commit ${nextRelease.version} [skip ci]"
         }],
-        "@semantic-release/github"
+        ["@semantic-release/github", {
+            "successComment": false,
+            "labels": false,
+            "releasedLabels": false
+        }]
     ]
 }
