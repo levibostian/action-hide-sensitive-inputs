@@ -30,7 +30,7 @@ jobs:
     steps:
     # Run this GitHub Action before any other steps in your workflow. 
     - name: Hide the inputs values to keep them private in the logs when running this workflow
-      uses: levibostian/action-hide-sensitive-inputs@1.0.0
+      uses: levibostian/action-hide-sensitive-inputs@v1
 
     # Safely use ${{ inputs.user_email_address }} in your workflow without worrying that an 
     # email address getting shown in the logs when running this workflow. 
@@ -57,18 +57,17 @@ This section of the docs is optional and meant for educational purposes. If you 
 
 ### How do you hide sensitive inputs in GitHub Action logs?
 
-GitHub Actions provides a feature to hide strings - [`add-mask`](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#masking-a-value-in-log). This feature is handy, but you have to be careful when you use `add-mask` because it's easy to use incorrectly. It's not as easy as: `echo "::add-mask::${{ inputs.user_email_address }}"` because the output of this command will actually show: 
+GitHub Actions provides a feature to hide strings - [`add-mask`](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#masking-a-value-in-log). This feature works, but you have to be careful when you use `add-mask` because it's easy to use incorrectly. It's not as easy as: `echo "::add-mask::${{ inputs.user_email_address }}"` because GitHub Actions seems to perform it's steps like this: 
 
-```
-echo "::add-mask::dana@green.com"
-"***"
-```
+1. Replace expressions with the values. In this example, replace `${{ inputs.user_email_address }}` with the value `dana@green.com`. 
+2. Add to the Action logs the command about to execute. In this example, add this to the logs: `echo "::add-mask::dana@green.com`
+3. Apply `add-mask` command to the value `dana@green.com`. This means the next time that the string `dana@green.com` is attempted to be logged, GitHub Actions will instead log `***`. 
 
-Yup. The value of the email address will show *before* the `add-mask` takes effect. GitHub Actions prints the command being executed (`echo "::add-mask::dana@green.com"`) and *then* `add-mask` takes effect which is why the next line shows `***` which is the output from running `echo`.  
+As you can see in step 2 above, the input value gets leaked to the Action logs. GitHub Actions logs the command about to be executed, *then* actually applies `add-mask`. 
 
-`add-mask` works, but you need to be thoughtful when using it. While browsing for ideas online on how to hide `workflow_dispatch` input values, I found [this clever use of `add-mask`](https://github.com/actions/runner/issues/643#issuecomment-823537871) which involves JSON parsing. Because `${{ inputs.X }}` is never used, the value is kept secret while `add-mask` gets executed. 
+`add-mask` works, but you need to be thoughtful when using it. While browsing for ideas online on how to hide `workflow_dispatch` input values, I found [this clever use of `add-mask`](https://github.com/actions/runner/issues/643#issuecomment-823537871) which involves JSON parsing. Because `${{ inputs.user_email_address }}` is never used in the `echo` command, the value of `input.user_email_address` is kept secret. Clever hack! 
 
-This workflow worked well for me: 
+From that hack, this workflow worked well for me: 
 
 ```yaml
 on: 
@@ -101,7 +100,7 @@ This gave me an idea. Create a node script that...
 The result? One line of code to feel confident that input values will be kept private. 🎉🎉🎉
 
 ```yaml
-- uses: levibostian/action-hide-sensitive-inputs@1.0.0
+- uses: levibostian/action-hide-sensitive-inputs@v1
 ```
 
 
