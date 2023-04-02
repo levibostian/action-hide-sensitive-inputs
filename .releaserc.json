@@ -18,6 +18,7 @@
             "successComment": false,
             "labels": false,
             "releasedLabels": false
-        }]
+        }],
+        "semantic-release-major-tag"
     ]
 }

@@ -21,16 +21,6 @@ jobs:
           conventional-changelog-conventionalcommits
           @semantic-release/git
           @semantic-release/exec
+          semantic-release-major-tag@0.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  major-version-update:
-    runs-on: ubuntu-latest
-    needs: [deploy-via-semantic-release] # wait for new git tag to be created before running 
-    permissions:
-      contents: write # to be able to push tags 
-    steps:
-    # Will automatically release vX for major releases after each deployment
-    - uses: Actions-R-Us/actions-tagger@v2
-      with:
-        token: "${{ github.token }}"
