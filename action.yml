@@ -2,7 +2,7 @@ name: 'Hide sensitive inputs'
 description: 'Hide the values of your GitHub Action workflow inputs'
 inputs:
   exclude_inputs: 
-    description: 'Comma-separated list of input names to not hide the value of. Example: phone-number,email-address'
+    description: 'Comma-separated list of input keys to not hide the value of. Example: phone-number,email-address'
     required: false    
 runs:
   using: 'node16'
