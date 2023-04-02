@@ -19,6 +19,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         target_branch: latest
         allow_fast_forward: true 
+        force_fast_forward: true # prevent merge commits from being made on latest branch 
     
     # We manually run here because github will not execute github actions as a result of commits being pushed to latest branch. 
     - name: Trigger deploy 
