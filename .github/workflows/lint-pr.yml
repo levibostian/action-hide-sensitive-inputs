@@ -5,5 +5,7 @@ on:
     types: [opened, reopened, edited, synchronize, labeled]
 
 jobs:
-  lint-pr-title: 
+  lint-pr-title:     
     uses: levibostian/action-semantic-pr/.github/workflows/sharable-workflow.yml@make-workflow
+    permissions:
+      pull-requests: write
