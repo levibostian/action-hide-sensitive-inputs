@@ -6,6 +6,6 @@ on:
 
 jobs:
   lint-pr-title:     
-    uses: levibostian/action-semantic-pr/.github/workflows/sharable-workflow.yml@make-workflow
+    uses: levibostian/action-semantic-pr/.github/workflows/sharable-workflow.yml@v3
     permissions:
       pull-requests: write
