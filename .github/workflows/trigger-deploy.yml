@@ -21,7 +21,7 @@ jobs:
     
     # We manually run here because github will not execute github actions as a result of commits being pushed to latest branch. 
     - name: Trigger deploy 
-      uses: aurelien-baudet/workflow-dispatch@v2
+      uses: the-actions-org/workflow-dispatch@v4.0.0
       id: deploy-action
       with:
         workflow: deploy-action.yml
