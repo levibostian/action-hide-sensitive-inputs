@@ -5,5 +5,5 @@ inputs:
     description: 'Comma-separated list of input keys to not hide the value of. Example: phone-number,email-address'
     required: false    
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'

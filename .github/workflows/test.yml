@@ -9,7 +9,7 @@ jobs:
       actions: write # to be able to call another action in the repo 
     steps: 
     - name: Trigger workflow that has inputs to hide. Wait for result.
-      uses: aurelien-baudet/workflow-dispatch@v2
+      uses: the-actions-org/workflow-dispatch@v4.0.0
       id: test-action
       with:
         workflow: run-action-via-dispatch.yml
