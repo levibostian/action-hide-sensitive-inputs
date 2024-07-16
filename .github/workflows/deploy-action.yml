@@ -9,7 +9,7 @@ jobs:
     permissions:
       contents: write # to be able to push tags and commits 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: npm ci
 
