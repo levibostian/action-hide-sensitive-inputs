@@ -14,8 +14,9 @@ jobs:
     - run: npm ci
 
     - name: Run semantic-release
-      uses: cycjimmy/semantic-release-action@v3
+      uses: cycjimmy/semantic-release-action@v4
       with: 
+        semantic_version: latest      
         branch: latest # have this match what this workflow triggers on
         extra_plugins: |
           conventional-changelog-conventionalcommits
