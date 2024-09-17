@@ -5,7 +5,7 @@ import colors from 'ansi-styles';
 // Get a list of inputs that we should hide the values of. 
 
 const listOfInputsToExclude = core.getInput('exclude_inputs').split(',').map(item => item.trim());
-let inputsObject = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).inputs;
+let inputsObject = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).inputs || {};
 let allInputKeys = Object.keys(inputsObject);
 
 core.info(`${colors.blue.open}All inputs for this workflow: ${allInputKeys}`)
