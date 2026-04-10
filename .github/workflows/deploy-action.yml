@@ -15,6 +15,10 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
+      
+      # install deno to run the decaf scripts in my deploy script.
+      # some of the scripts have broken npx or curl install bugs so deno is required to run them.
+      - uses: denoland/setup-deno@v2
 
       - uses: levibostian/decaf@0.13.0
         env:
