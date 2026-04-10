@@ -1,27 +1,36 @@
-name: Deploy Action 
-
 on: 
-  workflow_dispatch: # this workflow gets manually executed when commits merged into main 
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
-  deploy-via-semantic-release:
+  deploy-action:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to be able to push tags and commits 
+      contents: write # If your deploy script that you write needs to push a git commit, git tag, or create a GitHub Release.
+      pull-requests: write # If you enable pull request comments (they are enabled by default).
+      id-token: write # required by npm for publishing package
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 'lts/*'
 
-    - run: npm ci
-
-    - name: Run semantic-release
-      uses: cycjimmy/semantic-release-action@v4
-      with: 
-        semantic_version: latest      
-        branch: latest # have this match what this workflow triggers on
-        extra_plugins: |
-          conventional-changelog-conventionalcommits
-          @semantic-release/git
-          @semantic-release/exec
-          semantic-release-major-tag@0.3.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: levibostian/decaf@0.13.0
+        env:
+          # required to use 'gh' CLI in my step scripts. 
+          GH_TOKEN: ${{ github.token }}      
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          get_latest_release_current_branch: |
+            deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases get
+            deno run --allow-all --quiet jsr:@levibostian/decaf-script-release-branch get --release-branch latest --version-name {{ versionName }}
+          get_next_release_version: deno run --allow-all --quiet jsr:@levibostian/decaf-script-conventional-commits
+          # running a git command that's passed to the github releases script to get the latest commit hash for the branch 'latest' because release-branch script creates new commits. 
+          deploy: |
+            npm ci
+            npm run compile
+            deno run --allow-all --quiet jsr:@levibostian/decaf-script-release-branch set --release-branch latest --files dist --commit-message "chore: release {{ versionName }}"
+            COMMIT_SHA=$(deno run --allow-all --quiet jsr:@levibostian/decaf-script-release-branch latest-commit --release-branch latest)
+            deno run --allow-all --quiet jsr:@levibostian/decaf-script-major-tag --commit-sha $COMMIT_SHA
+            deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases set --generate-notes --latest --target $COMMIT_SHA
