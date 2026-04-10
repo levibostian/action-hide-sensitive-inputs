@@ -20,6 +20,8 @@ jobs:
         wait-for-completion: true 
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Fail if test was not successful 
-      if: ${{ steps.test-action.outputs.workflow-conclusion != 'success' }}
-      run: exit 1
+    - name: Assert log contents
+      run: node scripts/assert-logs.js
+      env:
+        RUN_URL: ${{ steps.test-action.outputs.runUrl }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
