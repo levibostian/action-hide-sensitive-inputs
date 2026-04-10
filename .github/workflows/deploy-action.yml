@@ -23,14 +23,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           get_latest_release_current_branch: |
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases get
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-release-branch get --release-branch latest --version-name {{ versionName }}
-          get_next_release_version: deno run --allow-all --quiet jsr:@levibostian/decaf-script-conventional-commits
+            npx @levibostian/decaf-script-github-releases get
+            npx @levibostian/decaf-script-release-branch get --release-branch latest --version-name {{ versionName }}
+          get_next_release_version: npx @levibostian/decaf-script-conventional-commits
           # running a git command that's passed to the github releases script to get the latest commit hash for the branch 'latest' because release-branch script creates new commits. 
           deploy: |
             npm ci
             npm run compile
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-release-branch set --release-branch latest --files dist --commit-message "chore: release {{ versionName }}"
-            COMMIT_SHA=$(deno run --allow-all --quiet jsr:@levibostian/decaf-script-release-branch latest-commit --release-branch latest)
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-major-tag --commit-sha $COMMIT_SHA
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases set --generate-notes --latest --target $COMMIT_SHA
+            npx @levibostian/decaf-script-release-branch set --release-branch latest --files dist --commit-message "chore: release {{ versionName }}"
+            COMMIT_SHA=$(npx @levibostian/decaf-script-release-branch latest-commit --release-branch latest)
+            npx @levibostian/decaf-script-major-tag --commit-sha $COMMIT_SHA
+            npx @levibostian/decaf-script-github-releases set --generate-notes --latest --target $COMMIT_SHA
