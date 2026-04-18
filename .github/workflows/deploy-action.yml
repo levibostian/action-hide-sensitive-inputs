@@ -26,9 +26,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}      
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          get_latest_release_current_branch: |
-            git checkout latest 
-            git merge --ff main
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases get 
+          get_latest_release_current_branch: deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases-release-branch get --release-branch latest
           get_next_release_version: deno run --allow-all --quiet jsr:@levibostian/decaf-script-conventional-commits
           deploy: deno run --allow-all --quiet ./scripts/deploy.ts
