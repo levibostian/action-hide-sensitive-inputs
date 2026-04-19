@@ -23,5 +23,5 @@ if (input.testMode) {
 
 // push to deploy 
 const COMMIT_SHA = await $`git rev-parse HEAD`.text()
-await $`deno run --allow-all --quiet jsr:@levibostian/decaf-script-major-tag --commit-sha ${COMMIT_SHA}`.printCommand()
+await $`deno run --allow-all --quiet jsr:@levibostian/decaf-script-major-tag --commit-sha ${COMMIT_SHA} --tag-prefix v`.printCommand()
 await $`deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases-release-branch set --release-branch latest`.printCommand()
