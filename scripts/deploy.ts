@@ -16,7 +16,7 @@ await $`git add -f dist && git commit -m "chore: release {{ versionName }}"`.pri
 
 // push the dist files to the 'latest' branch.
 if (input.testMode) {
-  await $`git push --dry-run`.printCommand()  
+  console.log("Running in test mode, skipping command: git push")
 } else {
   await $`git push`.printCommand()
 }
