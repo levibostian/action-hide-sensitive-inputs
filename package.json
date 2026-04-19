@@ -16,6 +16,6 @@
     "ansi-styles": "^6.2.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.4"
+    "@vercel/ncc": "0.38.4"
   }
 }

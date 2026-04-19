@@ -11,8 +11,8 @@ jobs:
       pull-requests: write # If you enable pull request comments (they are enabled by default).
       id-token: write # required by npm for publishing package
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 'lts/*'
       
@@ -20,7 +20,7 @@ jobs:
       # some of the scripts have broken npx or curl install bugs so deno is required to run them.
       - uses: denoland/setup-deno@v2
 
-      - uses: levibostian/decaf@0.13.0
+      - uses: levibostian/decaf@82cd55755480ddd25ed18672ff1166d90bfa426d # 0.13.0
         env:
           # required to use 'gh' CLI in my step scripts. 
           GH_TOKEN: ${{ github.token }}      
