@@ -1,27 +1,31 @@
-name: Deploy Action 
-
 on: 
-  workflow_dispatch: # this workflow gets manually executed when commits merged into main 
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
-  deploy-via-semantic-release:
+  deploy-action:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to be able to push tags and commits 
+      contents: write # If your deploy script that you write needs to push a git commit, git tag, or create a GitHub Release.
+      pull-requests: write # If you enable pull request comments (they are enabled by default).
+      id-token: write # required by npm for publishing package
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 'lts/*'
+      
+      # install deno to run the decaf scripts in my deploy script.
+      # some of the scripts have broken npx or curl install bugs so deno is required to run them.
+      - uses: denoland/setup-deno@v2
 
-    - run: npm ci
-
-    - name: Run semantic-release
-      uses: cycjimmy/semantic-release-action@v4
-      with: 
-        semantic_version: latest      
-        branch: latest # have this match what this workflow triggers on
-        extra_plugins: |
-          conventional-changelog-conventionalcommits
-          @semantic-release/git
-          @semantic-release/exec
-          semantic-release-major-tag@0.3.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: levibostian/decaf@0.13.0
+        env:
+          # required to use 'gh' CLI in my step scripts. 
+          GH_TOKEN: ${{ github.token }}      
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          get_latest_release_current_branch: deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases-release-branch get --release-branch latest
+          get_next_release_version: deno run --allow-all --quiet jsr:@levibostian/decaf-script-conventional-commits
+          deploy: deno run --allow-all --quiet ./scripts/deploy.ts
