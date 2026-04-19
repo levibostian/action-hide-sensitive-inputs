@@ -12,7 +12,8 @@ await $`git merge --ff main`.printCommand()
 // build and commit the dist files.
 await $`npm ci`.printCommand()
 await $`npm run compile`.printCommand()
-await $`git add -f dist && git commit -m "chore: release {{ versionName }}"`.printCommand()
+await $`git add -f dist`.printCommand()
+await $`git commit -m "chore: release ${input.nextVersionName}" || true`.printCommand() // the '|| true' is to prevent this command from erroring out if there are no changes to commit. This can happen if the dist files didn't change after the build.
 
 // push the dist files to the 'latest' branch.
 if (input.testMode) {
