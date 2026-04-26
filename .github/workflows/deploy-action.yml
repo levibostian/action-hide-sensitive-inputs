@@ -33,5 +33,5 @@ jobs:
             npm ci 
             npm run compile
             deno run --allow-all --quiet jsr:@levibostian/decaf-script-git commit-and-push --add dist
-            deno run --allow-all --quiet jsr:@levibostian/decaf-script-major-tag --commit-sha $(git rev-parse HEAD) --tag-prefix v
+            deno run --allow-all --quiet jsr:@levibostian/decaf-script-major-tag --tag-prefix v
             deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases-release-branch set --release-branch latest
