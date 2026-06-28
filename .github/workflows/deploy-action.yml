@@ -20,7 +20,7 @@ jobs:
       # some of the scripts have broken npx or curl install bugs so deno is required to run them.
       - uses: denoland/setup-deno@v2
 
-      - uses: levibostian/decaf@f05a397fae6c868da39c4db8330dd7fd997a482c # 0.16.0
+      - uses: levibostian/decaf@267c1e8599bf8b30a6e73e874b243d865479e228 # 0.17.0
         env:
           # required to use 'gh' CLI in my step scripts. 
           GH_TOKEN: ${{ github.token }}      
