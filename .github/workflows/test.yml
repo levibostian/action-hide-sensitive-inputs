@@ -9,7 +9,7 @@ jobs:
       actions: write # to be able to call another action in the repo
       contents: read # required for actions/checkout in dispatched workflow
     steps:
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
     - name: Trigger workflow that has inputs to hide. Wait for result.
       uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1
