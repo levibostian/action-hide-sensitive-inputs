@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
     - name: Trigger workflow that has inputs to hide. Wait for result.
-      uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1
+      uses: benc-uk/workflow-dispatch@d004979be141727c7a17c28f603e2facc40d0855 # v1
       id: test-action
       with:
         workflow: run-action-via-dispatch.yml
