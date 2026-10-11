@@ -13,9 +13,9 @@
   "type": "module",
   "dependencies": {
     "@actions/core": "^3.0.0",
-    "ansi-styles": "^6.2.1"
+    "ansi-styles": "^7.0.0"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.4"
+    "@vercel/ncc": "0.45.0"
   }
 }

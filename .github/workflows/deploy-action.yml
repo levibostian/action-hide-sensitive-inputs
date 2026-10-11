@@ -11,8 +11,8 @@ jobs:
       pull-requests: write # If you enable pull request comments (they are enabled by default).
       id-token: write # required by npm for publishing package
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 'lts/*'
       
@@ -20,7 +20,7 @@ jobs:
       # some of the scripts have broken npx or curl install bugs so deno is required to run them.
       - uses: denoland/setup-deno@v2
 
-      - uses: levibostian/decaf@0.13.0
+      - uses: levibostian/decaf@366970ed9e5059c9a9cf3b3237b3f19dfa0369ad # 0.17.3
         env:
           # required to use 'gh' CLI in my step scripts. 
           GH_TOKEN: ${{ github.token }}      
@@ -28,4 +28,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           get_latest_release_current_branch: deno run --allow-all --quiet jsr:@levibostian/decaf-script-github-releases-release-branch get --release-branch latest
           get_next_release_version: deno run --allow-all --quiet jsr:@levibostian/decaf-script-conventional-commits
-          deploy: deno run --allow-all --quiet ./scripts/deploy.ts
+          deploy: |
+            deno run --allow-all --quiet --node-modules-dir=auto jsr:@levibostian/decaf-script-git merge-into-release-branch --release-branch latest --merge-options="--ff"
+            npm ci 
+            npm run compile
+            deno run --allow-all --quiet --node-modules-dir=auto jsr:@levibostian/decaf-script-git commit-and-push --add dist
+            deno run --allow-all --quiet --node-modules-dir=auto jsr:@levibostian/decaf-script-major-tag --tag-prefix v
+            deno run --allow-all --quiet --node-modules-dir=auto jsr:@levibostian/decaf-script-github-releases-release-branch set --release-branch latest
